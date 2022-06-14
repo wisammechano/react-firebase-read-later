@@ -1,9 +1,27 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import firebaseApp from "../firebase";
+
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import {
+  getFirestore,
+  collection,
+  query as fsQuery,
+  where,
+  addDoc,
+} from "firebase/firestore";
+
+import { useCollection } from "react-firebase-hooks/firestore";
+
+const auth = getAuth(firebaseApp);
+const firestore = getFirestore(firebaseApp);
+
 export default function Home(props) {
   // @TODO: Use the auth state hook below
-  const [user, loading, error] = [];
+  const [user, loading, error] = useAuthState(auth);
 
   const navigate = useNavigate();
 
@@ -47,6 +65,17 @@ const AddForm = ({ user }) => {
     };
 
     // @TODO: Add book to database
+
+    const readLaterRef = collection(firestore, "ReadLater");
+
+    addDoc(readLaterRef, book)
+      .then((snapshot) => {
+        console.log("Created new entry. Id:", snapshot.id);
+      })
+      .catch((err) => {
+        alert("Error adding book.");
+        console.error(err);
+      });
   };
 
   return (
@@ -60,7 +89,12 @@ const AddForm = ({ user }) => {
 
 const BooksList = ({ user }) => {
   // @TODO: Query the books added by this `user.uid` using the collection hook
-  const [books, loading, error] = [];
+  const query = fsQuery(
+    collection(firestore, "ReadLater"),
+    where("created_by", "==", user.uid)
+  );
+
+  const [books, loading, error] = useCollection(query);
 
   if (loading) {
     return <p>Loading Books...</p>;

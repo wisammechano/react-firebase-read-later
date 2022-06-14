@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { getAuth } from "firebase/auth";
+import {
+  useAuthState,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import firebaseApp from "../firebase";
+
+const auth = getAuth(firebaseApp);
+
 function Copyright(props) {
   return (
     <footer style={{ textAlign: "center", marginTop: 20 }}>
@@ -13,12 +22,13 @@ function Copyright(props) {
 
 export default function Login() {
   // @TODO: Use the sign in hook below
-  const [login, user, loading, error] = [];
+  const [login, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const [persisted_user] = useAuthState(auth);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (user || persisted_user) {
       navigate("/");
     }
   });
@@ -30,6 +40,8 @@ export default function Login() {
     const password = data.get("password");
 
     // @TODO: Login the user
+
+    login(email, password);
   };
 
   return (

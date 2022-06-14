@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { getAuth } from "firebase/auth";
+import {
+  useCreateUserWithEmailAndPassword,
+  useAuthState,
+} from "react-firebase-hooks/auth";
+import firebaseApp from "../firebase";
+
+const auth = getAuth(firebaseApp);
+
 function Copyright(props) {
   return (
     <footer style={{ textAlign: "center", marginTop: 20 }}>
@@ -13,14 +22,16 @@ function Copyright(props) {
 
 export default function Register() {
   // @TODO: use the register hook below
-  const [register, user, loading, error] = [];
+  const [register, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [persisted_user] = useAuthState(auth);
 
   const [validationError, setValidationError] = useState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (user || persisted_user) {
       navigate("/");
     }
   });
@@ -37,6 +48,7 @@ export default function Register() {
       setValidationError();
 
       // @TODO: Register the user
+      register(email, password);
     }
   };
 
