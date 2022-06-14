@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import firebaseApp from "../firebase";
+import {db as firestore, auth} from "../firebase";
 
-import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import {
-  getFirestore,
   collection,
   query as fsQuery,
   where,
@@ -15,9 +13,6 @@ import {
 } from "firebase/firestore";
 
 import { useCollection } from "react-firebase-hooks/firestore";
-
-const auth = getAuth(firebaseApp);
-const firestore = getFirestore(firebaseApp);
 
 export default function Home(props) {
   // @TODO: Use the auth state hook below

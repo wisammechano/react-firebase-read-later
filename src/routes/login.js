@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getAuth } from "firebase/auth";
 import {
   useAuthState,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import firebaseApp from "../firebase";
+import { auth } from "../firebase";
 
-const auth = getAuth(firebaseApp);
 
 function Copyright(props) {
   return (
