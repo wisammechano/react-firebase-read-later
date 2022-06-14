@@ -11,6 +11,13 @@ import { getFirestore } from "firebase/firestore";
 
 const fbConfig = {
   // @TODO: Insert your firebase config
+  apiKey: "AIzaSyA9DRfIWL0FhkIxMSwjXCt2VnjuQIRX6LM",
+  authDomain: "prm-few-202203-react.firebaseapp.com",
+  projectId: "prm-few-202203-react",
+  storageBucket: "prm-few-202203-react.appspot.com",
+  messagingSenderId: "363480795758",
+  appId: "1:363480795758:web:5c5ed5d3a8802f5b1a747f",
+  measurementId: "G-9FSCQ65RLG",
 };
 
 // Initialize Firebase
